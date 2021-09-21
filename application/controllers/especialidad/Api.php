@@ -111,8 +111,8 @@ class Api extends MY_RootController {
 
       function especialidad_profesor_post(){
         $this->form_validation->set_data($this->post());
-        $this->form_validation->set_rules('pName','Profesor','required');
-        $this->form_validation->set_rules('pEsp','Especialidad','required');
+        $this->form_validation->set_rules('pName','Profesor','required|callback_usuario_exists');
+        $this->form_validation->set_rules('pEsp','Especialidad','required|callback_especialidad_exists');
 
         if($this->form_validation->run()){
       
@@ -135,7 +135,32 @@ class Api extends MY_RootController {
       }
 
 
+      function especialidad_profesor_put(){
 
+      }
+
+
+    function usuario_exists($value){
+        $usuario_exists = $this->DAO->selectEntity('usuario',array('id_usuario' => $value, 'estatus_usuario' => 'Activo', 'privilegios_usuario' => 'Profesor'),TRUE);
+        if($usuario_exists['data']){
+            return TRUE;
+     
+        }else{
+            $this->form_validation->set_message('usuario_exists','El campo {field} no existe en la base de datos ó no tiene permisos');
+            return False;
+     
+        }
+    }
+
+    function especialidad_exists($value){
+        $especialidad_exists = $this->DAO->selectEntity('especialidad',array('id_especialidad' => $value),TRUE);
+        if($especialidad_exists['data']){
+            return True;
+        }else{
+            $this->form_validation->set_message('especialidad_exists','El campo {field} no existe en la base de datos');
+            return False;
+        }
+    }
 
 
 
