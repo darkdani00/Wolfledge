@@ -20,7 +20,7 @@ CREATE TABLE usuario (
 CREATE TABLE especialidad(
     id_especialidad int primary key auto_increment,
     nombre_especialidad VARCHAR(80) not null UNIQUE
-);
+); -- normal --
 
 CREATE TABLE especialidad_profesor (
     id_espro int primary key auto_increment,
@@ -28,13 +28,13 @@ CREATE TABLE especialidad_profesor (
     FOREIGN KEY (usuariofk) REFERENCES usuario(id_usuario),
     especialidadfk int,
     FOREIGN KEY (especialidadfk) REFERENCES especialidad(id_especialidad)
-);
+); -- foreign --
 
 
 CREATE TABLE material (
     id_material int primary key auto_increment,
     link_clase VARCHAR(80) not null
-);
+); -- normal --
 
 CREATE TABLE clase (
     id_clase int primary key auto_increment,
@@ -49,7 +49,7 @@ CREATE TABLE clase (
     FOREIGN KEY (materialfk) REFERENCES material(id_material),
     usuariofk int,
     FOREIGN KEY (usuariofk) REFERENCES usuario(id_usuario)
-);
+); -- foreign --
 
 CREATE TABLE alumno_clase (
     id_alumno_clase int primary key auto_increment,
@@ -57,6 +57,10 @@ CREATE TABLE alumno_clase (
     FOREIGN KEY(clasefk) REFERENCES clase (id_clase),
     usuariofk int,
     FOREIGN KEY (usuariofk) REFERENCES usuario (id_usuario)
-);
+);  -- foreign --
 
 
+
+SELECT concat(nombre_usuario,' ',apellido1_usuario,' ',apellido2_usuario) as Nombre_Profesor, nombre_especialidad as especialidad from especialidad_profesor
+JOIN usuario on especialidad_profesor.usuariofk = usuario. id_usuario
+JOIN especialidad on especialidad_profesor.especialidadfk = especialidad.id_especialidad;

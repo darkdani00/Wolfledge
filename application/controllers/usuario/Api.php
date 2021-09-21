@@ -44,7 +44,7 @@ class Api extends MY_RootController {
         $this->form_validation->set_rules('pApellido2','Apellido Materno','required');
         $this->form_validation->set_rules('pEdad','Edad','required');
         $this->form_validation->set_rules('pPais','Pais','required');
-        $this->form_validation->set_rules('pEmail','Email','required');
+        $this->form_validation->set_rules('pEmail','Email','required|is_unique[usuario.correo_usuario]');
         $this->form_validation->set_rules('pPassword','Password','required');
         $this->form_validation->set_rules('pPrivilegios','Privilegios','required');
 
@@ -144,17 +144,6 @@ class Api extends MY_RootController {
           
       }
 
-  /*function users_get(){
-     $sql = "SELECT id_person, concat(name_person,' ', lastname_person) as fullname_person,
-     email_person, gender_person,identifier_person,phone_person, role_person,
-     IF ((SELECT COUNT(*) FROM tb_users WHERE user_person = id_person) >0, 'Con accesso','Sin accesso') as access_person,
-     IF (person_career IS NULL, '',(SELECT name_career FROM tb_careers WHERE person_career = id_career)) as career_person
-     FROM tb_persons";
-     //$sql = "SELECT * FROM tb_users, tb_persons WHERE id_person = user_person";
-     $response  = $this->DAO->sqlQuery($sql);
-     $this->response($response,200);
-  }
-  */
 
 
   function career_exists($value){
