@@ -44,6 +44,7 @@ CREATE TABLE clase (
     fecha_inicio DATE not null,
     fecha_fin DATE not null,
     especialidadfk int,
+    estatus_clase enum('Activo','Inactivo') DEFAULT 'Activo',
     FOREIGN KEY (especialidadfk) REFERENCES especialidad(id_especialidad),
     materialfk int,
     FOREIGN KEY (materialfk) REFERENCES material(id_material),
@@ -62,5 +63,10 @@ CREATE TABLE alumno_clase (
 
 
 SELECT concat(nombre_usuario,' ',apellido1_usuario,' ',apellido2_usuario) as Nombre_Profesor, nombre_especialidad as especialidad from especialidad_profesor
-JOIN usuario on especialidad_profesor.usuariofk = usuario. id_usuario
+JOIN usuario on especialidad_profesor.usuariofk = usuario.id_usuario
 JOIN especialidad on especialidad_profesor.especialidadfk = especialidad.id_especialidad;
+
+SELECT concat(nombre_usuario,' ',apellido1_usuario,' ',apellido2_usuario) as Nombre_Alumno, nombre_especialidad from alumno_clase
+Left JOIN usuario on alumno_clase.usuariofk = usuario.id_usuario
+JOIN clase on alumno_clase.clasefk = clase.id_clase
+JOIN especialidad on clase.especialidadfk = especialidad.id_especialidad;
