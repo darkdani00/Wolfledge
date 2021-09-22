@@ -194,7 +194,6 @@ class Api extends MY_RootController {
     }
 
 
-
     function usuario_exists($value){
         $usuario_exists = $this->DAO->selectEntity('usuario',array('id_usuario' => $value, 'estatus_usuario' => 'Activo', 'privilegios_usuario' => 'Profesor'),TRUE);
         if($usuario_exists['data']){
