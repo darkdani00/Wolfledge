@@ -135,9 +135,64 @@ class Api extends MY_RootController {
       }
 
 
-      function especialidad_profesor_put(){
+    function especialidad_profesor_put(){
+        if($this->get('epId')){
+            $especialidad_profesor_existe =  $this->DAO->selectEntity('especialidad_profesor',array('id_espro' => $this->get('epId')),TRUE);
+            if($especialidad_profesor_existe){
+                $this->form_validation->set_data($this->put());
+                $this->form_validation->set_rules('pName','Profesor','required|callback_usuario_exists');
+                $this->form_validation->set_rules('pEsp','Especialidad','required|callback_especialidad_exists');
 
+                if($this->form_validation->run()){
+                    $data = array(
+                        "usuariofk" => $this->put('pName'),
+                        "especialidadfk" => $this->put('pEsp')
+                    );
+                    $response = $this->DAO->saveOrUpdate('especialidad_profesor',$data,array('id_espro' => $this->get('epId')));
+                    
+                }else{
+                   $response = array(
+                       "status"=>"success",
+                       "message"=>"Información enviada incorrectamente.",
+                       "validations"=>$this->form_validation->error_array(),
+                       "data"=>null
+                   );
+                }
+            }else{
+                $response = array(
+                    "status"=>"error",
+                    "message"=>"Id no enviado",
+                    "validations"=>$this->form_validation->error_array(),
+                    "data"=>null
+                );
+              }
+              $this->response($response,200);
+            }
       }
+
+    function especialidad_profesor_delete(){
+        if($this->get('epId')){
+            $especialidad_existe = $this->DAO->selectEntity('especialidad_profesor',array('id_espro'=>$this->get('epId')),TRUE);
+            if($especialidad_existe){
+                $this->DAO->deleteEntity('especialidad_profesor',array('id_espro'=>$this->get('epId')),TRUE);
+            }else{
+                $response = array(
+                    "status"=>"error",
+                    "message"=>"La clave no fue encontrada en la base de datos",
+                    "validations"=>$this->form_validation->error_array(),
+                    "data"=>null
+                );
+              }
+          }else{
+            $response = array(
+                "status"=>"error",
+                "message"=>"Id no enviado",
+                "validations"=>$this->form_validation->error_array(),
+                "data"=>null
+            );
+          }
+    }
+
 
 
     function usuario_exists($value){
