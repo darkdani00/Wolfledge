@@ -61,6 +61,10 @@ CREATE TABLE alumno_clase (
 );  -- foreign --
 
 
+CREATE VIEW usuario_view AS SELECT 
+id_usuario,nombre_usuario,apellido1_usuario,apellido2_usuario
+,edad_usuario,pais_usuario,correo_usuario,password_usuario,privilegios_usuario,estatus_usuario from usuario;
+
 
 SELECT concat(nombre_usuario,' ',apellido1_usuario,' ',apellido2_usuario) as Nombre_Profesor, nombre_especialidad as especialidad from especialidad_profesor
 JOIN usuario on especialidad_profesor.usuariofk = usuario.id_usuario
