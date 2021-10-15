@@ -4,6 +4,7 @@ USE wolfledge;
 
 CREATE TABLE usuario (
     id_usuario INT primary key auto_increment,
+    imagen_usuario VARCHAR(180),
     nombre_usuario varchar(80) not null,
     apellido1_usuario varchar(80) not null,
     apellido2_usuario varchar(80),
@@ -19,7 +20,8 @@ CREATE TABLE usuario (
 
 CREATE TABLE especialidad(
     id_especialidad int primary key auto_increment,
-    nombre_especialidad VARCHAR(80) not null UNIQUE
+    nombre_especialidad VARCHAR(80) not null UNIQUE,
+    estatus_especialidad enum('Activo','Inactivo') DEFAULT 'Activo'
 ); -- normal --
 
 CREATE TABLE especialidad_profesor (
@@ -33,7 +35,8 @@ CREATE TABLE especialidad_profesor (
 
 CREATE TABLE material (
     id_material int primary key auto_increment,
-    link_clase VARCHAR(80) not null
+    link_clase VARCHAR(80) not null,
+    estatus_material enum('Activo','Inactivo') DEFAULT 'Activo'
 ); -- normal --
 
 CREATE TABLE clase (
@@ -66,11 +69,22 @@ id_usuario,nombre_usuario,apellido1_usuario,apellido2_usuario
 ,edad_usuario,pais_usuario,correo_usuario,password_usuario,privilegios_usuario,estatus_usuario from usuario;
 
 
-SELECT concat(nombre_usuario,' ',apellido1_usuario,' ',apellido2_usuario) as Nombre_Profesor, nombre_especialidad as especialidad from especialidad_profesor
+CREATE VIEW especialidad_view AS SELECT id_espro, id_usuario,  concat(nombre_usuario,' ',apellido1_usuario,' ',apellido2_usuario) as Nombre_Profesor, id_especialidad,nombre_especialidad as especialidad from especialidad_profesor
 JOIN usuario on especialidad_profesor.usuariofk = usuario.id_usuario
 JOIN especialidad on especialidad_profesor.especialidadfk = especialidad.id_especialidad;
 
-SELECT concat(nombre_usuario,' ',apellido1_usuario,' ',apellido2_usuario) as Nombre_Alumno, nombre_especialidad from alumno_clase
-Left JOIN usuario on alumno_clase.usuariofk = usuario.id_usuario
-JOIN clase on alumno_clase.clasefk = clase.id_clase
+-- SELECT concat(nombre_usuario,' ',apellido1_usuario,' ',apellido2_usuario) as Nombre_Alumno, nombre_especialidad from alumno_clase
+-- Left JOIN usuario on alumno_clase.usuariofk = usuario.id_usuario
+-- JOIN clase on alumno_clase.clasefk = clase.id_clase
+-- JOIN especialidad on clase.especialidadfk = especialidad.id_especialidad;
+
+
+SELECT descripcion_clase, nombre_usuario, nombre_especialidad from clase
+JOIN usuario on clase.usuariofk = usuario.id_usuario
+JOIN especialidad on especialidad_profesor.especialidadfk = especialidad.id_especialidad;
+
+CREATE VIEW clase_view AS SELECT id_clase,id_usuario,id_especialidad ,descripcion_clase, horario_inicio_clase,horario_fin_clase,
+fecha_inicio,fecha_fin,estatus_clase,concat(nombre_usuario,' ',apellido1_usuario,' ',apellido2_usuario) as Nombre_Profesor,link_clase, nombre_especialidad from clase
+JOIN usuario on clase.usuariofk = usuario.id_usuario
+JOIN material on clase.materialfk = material.id_material
 JOIN especialidad on clase.especialidadfk = especialidad.id_especialidad;
