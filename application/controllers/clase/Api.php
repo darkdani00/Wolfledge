@@ -12,9 +12,9 @@ class Api extends MY_RootController {
 
    function clase_get(){
        if($this->get('cId')){
-            $response = $this->DAO->selectEntity('clase',array('id_clase' => $this->get('cId')),TRUE);
+            $response = $this->DAO->selectEntity('clase_view',array('id_clase' => $this->get('cId')),TRUE);
         }else{
-            $response = $this->DAO->selectEntity('clase');
+            $response = $this->DAO->selectEntity('clase_view');
         }
         $this->response($response,200);
     }
