@@ -96,11 +96,26 @@ class DAO extends CI_Model {
     	return $response;
     }
 
-    function login($email,$password){
+    function login($email,$password, $app = "web"){
         $this->db->where('correo_usuario',$email);
         $usuario_existe = $this->db->get('usuario')->row();
         if($usuario_existe){
             if($usuario_existe->password_usuario == $password){
+                $has_permition = TRUE;
+                if($app == "mobile"){
+                    $roles_permited = array('Profesor');
+                    if(!in_array($usuario_existe->privilegios_usuario, $roles_permited)){
+                        $has_permition = FALSE;
+                        $response = array(
+                        "status" => "error",
+                        "message" => "Por el momento, los Estudiantes no tienen acceso a la aplicación. Disculpe las molestias",
+                        "validations" => array(),
+                        "data" => null
+                        );
+                    }
+                }
+                if($has_permition){
+
                 return array(
                     "status" => "success",
                     "message" => "Usuario cargado correctamente.",
@@ -110,6 +125,8 @@ class DAO extends CI_Model {
                         "apellidos_usuario" => $usuario_existe->apellido1_usuario.' '.$usuario_existe->apellido2_usuario
                         )
                     );
+                }
+
             }else{
                 $response = array(
                     "status" => "error",

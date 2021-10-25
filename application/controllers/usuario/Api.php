@@ -28,6 +28,25 @@ class Api extends MY_RootController {
      $this->response($response,200);
    }
 
+   function login_mobile_post(){
+    $this->form_validation->set_data($this->post());
+    $this->form_validation->set_rules('pEmail','Email','required');
+    $this->form_validation->set_rules('pPassword','Password','required');
+
+    if($this->form_validation->run()){
+       $response = $this->DAO->login($this->post('pEmail'),$this->post('pPassword'),"mobile");
+
+    }else{
+       $response = array(
+           "status"=>"error",
+           "message"=>"Información enviada incorrectamente.",
+           "validations"=>$this->form_validation->error_array(),
+           "data"=>null
+       );
+    }
+    $this->response($response,200);
+  }
+
    function usuario_get(){
        if($this->get('uId')){
             $response = $this->DAO->selectEntity('usuario',array('id_usuario' => $this->get('uId')),TRUE);

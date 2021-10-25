@@ -73,7 +73,7 @@ CREATE VIEW especialidad_view AS SELECT id_espro, id_usuario,  concat(nombre_usu
 JOIN usuario on especialidad_profesor.usuariofk = usuario.id_usuario
 JOIN especialidad on especialidad_profesor.especialidadfk = especialidad.id_especialidad;
 
- CREATE VIEW alumno_view AS SELECT id_alumno_clase,id_usuario,id_clase,concat(nombre_usuario,' ',apellido1_usuario,' ',apellido2_usuario) as Nombre_Alumno, nombre_especialidad from alumno_clase
+ CREATE VIEW alumno_view AS SELECT id_alumno_clase,id_usuario,id_clase,concat(nombre_usuario,' ',apellido1_usuario,' ',apellido2_usuario) as Nombre_Alumno, nombre_especialidad, horario_inicio_clase, horario_fin_clase from alumno_clase
  Left JOIN usuario on alumno_clase.usuariofk = usuario.id_usuario
  JOIN clase on alumno_clase.clasefk = clase.id_clase
  JOIN especialidad on clase.especialidadfk = especialidad.id_especialidad;
