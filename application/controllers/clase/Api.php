@@ -19,6 +19,15 @@ class Api extends MY_RootController {
         $this->response($response,200);
     }
 
+    function profesores_get(){
+        if($this->get('pId')){
+            $response = $this->DAO->selectEntity('usuario',array('id_usuario' => $this->get('pId'),'privilegios_usuario' => 'Profesor'),TRUE);
+        }else{
+            $response = $this->DAO->selectEntity('usuario',array('estatus_usuario'=>'Activo','privilegios_usuario' => 'Profesor'));
+        }
+        $this->response($response,200);
+    }
+
     function clase_post(){
         $this->form_validation->set_data($this->post());
         $this->form_validation->set_rules('pDesc','Descripción','required');
