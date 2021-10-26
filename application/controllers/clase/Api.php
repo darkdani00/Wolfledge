@@ -14,7 +14,7 @@ class Api extends MY_RootController {
        if($this->get('cId')){
             $response = $this->DAO->selectEntity('clase_view',array('id_clase' => $this->get('cId')),TRUE);
         }else{
-            $response = $this->DAO->selectEntity('clase_view');
+            $response = $this->DAO->selectEntity('clase_view',array('estatus_clase'=>'Activo'));
         }
         $this->response($response,200);
     }
