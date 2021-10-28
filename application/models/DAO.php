@@ -103,7 +103,7 @@ class DAO extends CI_Model {
             if($usuario_existe->password_usuario == $password){
                 $has_permition = TRUE;
                 if($app == "mobile"){
-                    $roles_permited = array('Profesor');
+                    $roles_permited = array('Profesor','Administrador');
                     if(!in_array($usuario_existe->privilegios_usuario, $roles_permited)){
                         $has_permition = FALSE;
                         $response = array(
